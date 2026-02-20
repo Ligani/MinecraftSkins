@@ -20,8 +20,4 @@
 	  <ProjectReference Include="..\MinecraftSkins.Services\MinecraftSkins.Services.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Новая папка\" />
-  </ItemGroup>
-
 </Project>

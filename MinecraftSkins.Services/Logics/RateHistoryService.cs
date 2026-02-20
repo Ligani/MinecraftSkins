@@ -1,11 +1,6 @@
 ﻿using MinecraftSkins.Domain.Models;
-using MinecraftSkins.Infrastructure.Repositories;
+using MinecraftSkins.Services.Interfaces.IRepositories;
 using MinecraftSkins.Services.Interfaces.IServices;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MinecraftSkins.Services.Logics
 {

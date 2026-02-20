@@ -2,11 +2,7 @@
 using MinecraftSkins.Domain.Models;
 using MinecraftSkins.Infrastructure.Data;
 using MinecraftSkins.Services.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MinecraftSkins.Services.Interfaces.IRepositories;
 
 namespace MinecraftSkins.Infrastructure.Repositories
 {
@@ -26,19 +22,10 @@ namespace MinecraftSkins.Infrastructure.Repositories
             return purchase;
         }
 
-        public async Task<PagedResponse<Purchase>> GetPagedAsync(
-            Guid? buyerId,
-            bool mineOnly,
-            Guid? skinId,
-            DateTime? from,
-            DateTime? to,
-            int pageNumber,
-            int pageSize, 
-            CancellationToken cancellationToken)
+        public async Task<PagedResponse<Purchase>> GetPagedAsync(Guid? buyerId, bool mineOnly, Guid? skinId, DateTime? from, DateTime? to,
+            int pageNumber, int pageSize, CancellationToken cancellationToken)
         {
             var query = _dbContext.Purchases.Where(x => !x.IsDeleted).AsNoTracking();
-
-            var totalCount = await query.CountAsync(cancellationToken);
 
             if (buyerId.HasValue)
                 query = query.Where(x => x.BuyerId == buyerId);
@@ -52,10 +39,16 @@ namespace MinecraftSkins.Infrastructure.Repositories
             if (to.HasValue)
                 query = query.Where(x => x.PurchasedAtUtc <= to);
 
+            if (mineOnly)
+                query = query.Where(x => x.BuyerId == buyerId);
+
             var items = await query.OrderBy(x => x.PurchasedAtUtc)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync(cancellationToken);
+
+            var totalCount = await query.CountAsync(cancellationToken);
+
 
             return new PagedResponse<Purchase>
             {
@@ -70,6 +63,7 @@ namespace MinecraftSkins.Infrastructure.Repositories
         {
             return await _dbContext.Purchases.FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
         }
+
         public async Task UpdateAsync(Purchase purchase, CancellationToken cancellationToken)
         {
             _dbContext.Purchases.Update(purchase);

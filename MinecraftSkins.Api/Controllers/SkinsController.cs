@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using MinecraftSkins.Domain.Models;
+﻿using Microsoft.AspNetCore.Mvc;
 using MinecraftSkins.Services.DTO;
 using MinecraftSkins.Services.Interfaces.IServices;
 
@@ -16,6 +14,7 @@ namespace MinecraftSkins.Controllers
         {
             _skinService = skinService;
         }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)
         {
@@ -24,10 +23,7 @@ namespace MinecraftSkins.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(
-            Guid id, 
-            [FromBody] SkinRequest request, 
-            CancellationToken cancellationToken)
+        public async Task<IActionResult> Update(Guid id, [FromBody] SkinRequest request, CancellationToken cancellationToken)
         {
             await _skinService.UpdateAsync(id, request.Name, request.BasePriceUsd, request.IsAvailable, cancellationToken);
             return NoContent();
@@ -39,6 +35,7 @@ namespace MinecraftSkins.Controllers
             await _skinService.DeleteAsync(id, cancellationToken);
             return NoContent();
         }
+
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] SkinRequest request, CancellationToken cancellationToken)
         {
@@ -48,18 +45,12 @@ namespace MinecraftSkins.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetPaged(
-            [FromQuery] bool availableOnly = false,
-            [FromQuery] string? search = null,
-            [FromQuery] int pageNumber = 1, 
-            [FromQuery] int pageSize = 10, 
-            CancellationToken cancellationToken = default)
+        public async Task<IActionResult> GetPaged([FromQuery] bool availableOnly = false, [FromQuery] string? search = null, [FromQuery] int pageNumber = 1, 
+            [FromQuery] int pageSize = 5, CancellationToken cancellationToken = default)
         {
             var result = await _skinService.GetPagedAsync(availableOnly, search, pageNumber,pageSize,cancellationToken);
 
             return Ok(result);
         }
-
-
     }
 }

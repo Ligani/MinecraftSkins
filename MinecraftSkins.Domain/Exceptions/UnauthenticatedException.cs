@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MinecraftSkins.Domain.Exceptions
+﻿namespace MinecraftSkins.Domain.Exceptions
 {
-    internal class UnauthenticatedException
+    public class UnauthenticatedException : Exception
     {
+        public UnauthenticatedException(string message) : base(message) { }
     }
 }

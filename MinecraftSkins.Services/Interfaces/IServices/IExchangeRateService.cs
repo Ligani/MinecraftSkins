@@ -1,6 +1,4 @@
-﻿using MinecraftSkins.Domain.Enums;
-
-namespace MinecraftSkins.Services.Logics
+﻿namespace MinecraftSkins.Services.Interfaces.IServices
 {
     public interface IExchangeRateService
     {

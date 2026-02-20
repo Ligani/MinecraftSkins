@@ -1,8 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.AspNetCore.Mvc;
 using MinecraftSkins.Extensions;
-using MinecraftSkins.Infrastructure.Repositories;
 using MinecraftSkins.Services.DTO;
 using MinecraftSkins.Services.Interfaces.IServices;
 using MinecraftSkins.Services.Logics;
@@ -21,43 +18,20 @@ namespace MinecraftSkins.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Buy(
-            Guid skinId, 
-            CancellationToken cancellationToken)
+        public async Task<IActionResult> Buy([FromBody] PurchaseRequest purchaseRequest, CancellationToken cancellationToken)
         {
-            if (HttpContext.Items["BuyerId"] is not Guid buyerId)
-            {
-                return Unauthorized("Пользователь не идентифицирован");
-            }
-            var purchase = await _purchaseService.CreateAsync(skinId, buyerId, cancellationToken);
+            var buyerId = HttpContext.GetBuyerId();
+            var purchase = await _purchaseService.CreateAsync(purchaseRequest.SkinId, buyerId, cancellationToken);
 
             return Ok(purchase);
         }
-        [HttpGet]
-        public async Task<ActionResult<PagedResponse<SkinResponse>>> GetPaged(
-            [FromQuery] bool mineOnly = false,
-            [FromQuery] Guid? skinId = null,
-            [FromQuery] DateTime? from = null,
-            [FromQuery] DateTime? to = null,
-            [FromQuery] int pageNumber = 1,
-            [FromQuery] int pageSize = 10,
-            CancellationToken cancellationToken = default)
-        {
-            Guid? buyerId = HttpContext.Items["BuyerId"] as Guid?;
 
-            if (mineOnly && buyerId == null)
-            {
-                return Unauthorized("Для фильтра mineOnly необходимо передать заголовок X-User-Id");
-            }
-            var result = await _purchaseService.GetPagedAsync(
-                buyerId,
-                mineOnly, 
-                skinId, 
-                from, 
-                to,
-                pageNumber,
-                pageSize,
-                cancellationToken);
+        [HttpGet]
+        public async Task<ActionResult<PagedResponse<PurchaseResponse>>> GetPaged([FromQuery] bool mineOnly = false,[FromQuery] Guid? skinId = null,[FromQuery] DateTime? from = null, 
+            [FromQuery] DateTime? to = null, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, CancellationToken cancellationToken = default)
+        {
+            var buyerId = HttpContext.GetBuyerId();
+            var result = await _purchaseService.GetPagedAsync(buyerId,mineOnly, skinId, from, to,pageNumber,pageSize,cancellationToken);
 
             return Ok(result);
         }

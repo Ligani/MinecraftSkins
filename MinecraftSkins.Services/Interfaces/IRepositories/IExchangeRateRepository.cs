@@ -1,6 +1,6 @@
 ﻿using MinecraftSkins.Domain.Models;
 
-namespace MinecraftSkins.Infrastructure.Repositories
+namespace MinecraftSkins.Services.Interfaces.IRepositories
 {
     public interface IExchangeRateRepository
     {

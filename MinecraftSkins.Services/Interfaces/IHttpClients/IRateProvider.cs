@@ -1,10 +1,9 @@
-﻿
-using MinecraftSkins.Domain.Enums;
+﻿using MinecraftSkins.Domain.Enums;
 
-namespace MinecraftSkins.Infrastructure.HttpClients
+namespace MinecraftSkins.Services.Interfaces.IHttpClients
 {
     public interface IRateProvider
     {
-        Task<(decimal, RateSource)> GetRateAsync(CancellationToken cancellationToken);
+        Task<(decimal Rate, RateSource Source)> GetRateAsync(CancellationToken cancellationToken);
     }
 }

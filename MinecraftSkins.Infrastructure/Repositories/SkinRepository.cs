@@ -2,11 +2,7 @@
 using MinecraftSkins.Domain.Models;
 using MinecraftSkins.Infrastructure.Data;
 using MinecraftSkins.Services.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MinecraftSkins.Services.Interfaces.IRepositories;
 
 namespace MinecraftSkins.Infrastructure.Repositories
 {
@@ -24,12 +20,8 @@ namespace MinecraftSkins.Infrastructure.Repositories
             await _dbContext.Skins.AddAsync(skin, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
-        public async Task<PagedResponse<Skin>> GetPagedAsync(
-            bool availableOnly,
-            string? search,
-            int pageNumber,
-            int pageSize,
-            CancellationToken cancellationToken)
+
+        public async Task<PagedResponse<Skin>> GetPagedAsync(bool availableOnly, string? search, int pageNumber, int pageSize, CancellationToken cancellationToken)
         {
             var query = _dbContext.Skins.Where(x => !x.IsDeleted).AsNoTracking();
 
@@ -69,6 +61,7 @@ namespace MinecraftSkins.Infrastructure.Repositories
             _dbContext.Skins.Update(skin);
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
+
         public async Task<bool> TryMarkAsSoldAsync(Guid skinId, CancellationToken ct)
         {
             var affectedRows = await _dbContext.Skins

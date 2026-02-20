@@ -1,10 +1,7 @@
 ﻿using MinecraftSkins.Domain.Enums;
-using MinecraftSkins.Infrastructure.HttpClients;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MinecraftSkins.Services.Interfaces.IHttpClients;
+using MinecraftSkins.Services.Interfaces.IServices;
+
 
 namespace MinecraftSkins.Services.Logics
 {

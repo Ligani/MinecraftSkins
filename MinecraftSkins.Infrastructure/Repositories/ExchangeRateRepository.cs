@@ -1,11 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MinecraftSkins.Domain.Models;
 using MinecraftSkins.Infrastructure.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MinecraftSkins.Services.Interfaces.IRepositories;
 
 namespace MinecraftSkins.Infrastructure.Repositories
 {

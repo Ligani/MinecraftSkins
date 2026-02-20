@@ -6,25 +6,41 @@ namespace MinecraftSkins.Middlewares
 {
     public class GlobalExceptionHandler : IExceptionHandler
     {
-        public async ValueTask<bool> TryHandleAsync(
-            HttpContext httpContext,
-            Exception exception,
-            CancellationToken cancellationToken)
+        public async ValueTask<bool> TryHandleAsync(HttpContext httpContext,Exception exception,CancellationToken cancellationToken)
         {
             var (statusCode, title) = exception switch
             {
                 NotFoundException => (StatusCodes.Status404NotFound, "Resource Not Found"),
+
                 UnavailableException => (StatusCodes.Status409Conflict, "Conflict"),
+
                 BusinessException => (StatusCodes.Status400BadRequest, "Business Rule Violation"),
-                ExternalServiceException => (StatusCodes.Status503ServiceUnavailable, "Service Unavailable"),
+
+                UnauthenticatedException => (StatusCodes.Status401Unauthorized, "Unauthorized"),
+
+                ExternalServiceException => (StatusCodes.Status502BadGateway, "Service Unavailable"),
+
+                DomainException => (StatusCodes.Status422UnprocessableEntity, "Request validation failed"),
+
                 _ => (StatusCodes.Status500InternalServerError, "Internal Server Error")
+
             };
+
+            string detail;
+            if (statusCode == StatusCodes.Status500InternalServerError)
+            {
+                detail = "An unexpected error occurred on the server.";
+            }
+            else
+            {
+                detail = exception.Message;
+            }
 
             var problemDetails = new ProblemDetails
             {
                 Status = statusCode,
                 Title = title,
-                Detail = exception.Message,
+                Detail = detail,
                 Instance = httpContext.Request.Path 
             };
 

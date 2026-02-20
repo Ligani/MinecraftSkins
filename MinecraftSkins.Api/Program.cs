@@ -4,9 +4,10 @@ using MinecraftSkins.Infrastructure.Data;
 using MinecraftSkins.Infrastructure.HttpClients;
 using MinecraftSkins.Infrastructure.Repositories;
 using MinecraftSkins.Middlewares;
+using MinecraftSkins.Services.Interfaces.IHttpClients;
+using MinecraftSkins.Services.Interfaces.IRepositories;
 using MinecraftSkins.Services.Interfaces.IServices;
 using MinecraftSkins.Services.Logics;
-using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,9 +22,19 @@ builder.Services.AddHttpClient<IRateProvider, RateProvider>(client =>
     client.DefaultRequestHeaders.Add("Accept", "application/json");
     client.DefaultRequestHeaders.Add("User-Agent", "MinecraftSkinsApp/1.0");
 });
+const string ReactAppPolicy = "ReactAppPolicy";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: ReactAppPolicy, policy =>
+        {
+            policy.WithOrigins("http://localhost:5173").AllowAnyMethod().AllowAnyHeader().WithExposedHeaders("X-Pagination");
+        });
+});
 
 builder.Services.AddControllers();
+
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("UserHeader", new OpenApiSecurityScheme
@@ -77,6 +88,8 @@ if (app.Environment.IsDevelopment())
 app.UseExceptionHandler();
 
 app.UseHttpsRedirection();
+
+app.UseCors(ReactAppPolicy);
 
 app.UseMiddleware<BuyerIdMiddleware>();
 

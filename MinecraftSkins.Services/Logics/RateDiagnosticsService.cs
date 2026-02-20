@@ -1,11 +1,6 @@
-﻿using MinecraftSkins.Infrastructure.HttpClients;
+﻿using MinecraftSkins.Services.Interfaces.IHttpClients;
 using MinecraftSkins.Services.Interfaces.IServices;
 using MinecraftSkins__BTC_indexed_pricing_.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MinecraftSkins.Services.Logics
 {

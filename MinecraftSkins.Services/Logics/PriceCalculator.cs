@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MinecraftSkins.Services.Interfaces.IServices;
+﻿using MinecraftSkins.Services.Interfaces.IServices;
+
 namespace MinecraftSkins.Services.Logics
 {
     public class PriceCalculator : IPriceCalculator

@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MinecraftSkins.Services.Interfaces.IServices;
-using MinecraftSkins.Services.Logics;
 using MinecraftSkins__BTC_indexed_pricing_.DTO;
 
 namespace MinecraftSkins.Controllers
