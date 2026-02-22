@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:17
+    container_name: minecraft_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ytrewq321
+      POSTGRES_DB: MinecraftSkinsDb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  api:
+    build:
+      context: ./MinecraftSkins.Backend
+      dockerfile: Dockerfile
+    container_name: minecraft_api
+    depends_on:
+      - db
+    ports:
+      - "7258:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=db;Database=MinecraftSkinsDb;Username=postgres;Password=ytrewq321
+
+  client:
+    build:
+      context: ./MinecraftSkins.Frontend/minecraft-skins 
+      dockerfile: Dockerfile
+    container_name: minecraft_client
+    depends_on:
+      - api
+    ports:
+      - "8081:80"
+
+volumes:
+  pg_data:

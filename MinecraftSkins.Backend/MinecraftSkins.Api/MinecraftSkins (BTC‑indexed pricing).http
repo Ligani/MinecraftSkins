@@ -1,0 +1,6 @@
+@MinecraftSkins__BTC_indexed_pricing__HostAddress = http://localhost:5117
+
+GET {{MinecraftSkins__BTC_indexed_pricing__HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
