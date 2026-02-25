@@ -38,11 +38,7 @@ builder.Services.AddCors(options =>
         });
 });
 
-builder.Services.AddControllers(options =>
-{
-    options.Filters.Add<ValidationFilter>();
-    options.Filters.Add<ResponseWrapperFilter>();
-});
+builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 
@@ -76,7 +72,6 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddProblemDetails();
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
-
 builder.Services.AddScoped<IExchangeRateRepository, ExchangeRateRepository>();
 builder.Services.AddScoped<IPurchaseRepository, PurchaseRepository>();
 builder.Services.AddScoped<ISkinRepository, SkinRepository>();
@@ -97,7 +92,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseExceptionHandler();
-
+app.UseRouting();
 app.UseCors(ReactAppPolicy);
 
 app.UseMiddleware<BuyerIdMiddleware>();
