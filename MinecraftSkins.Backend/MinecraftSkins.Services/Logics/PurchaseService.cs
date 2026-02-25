@@ -32,6 +32,9 @@ namespace MinecraftSkins.Services.Logics
             if (!skin.IsAvailable)
                 throw new UnavailableException("Skin is no longer available.");
 
+            if (buyerId == null)
+                throw new UnauthenticatedException("Unauthorized access. Buyer ID is not specified.");
+
 
             var currentRate = await _exchangeRateService.GetRateAsync(cancellationToken);
 
@@ -40,9 +43,7 @@ namespace MinecraftSkins.Services.Logics
             var success = await _skinRepository.TryMarkAsSoldAsync(skinId, cancellationToken);
 
             if (!success)
-            {
                 throw new UnavailableException("Sorry, this skin was just purchased.");
-            }
 
             try
             {

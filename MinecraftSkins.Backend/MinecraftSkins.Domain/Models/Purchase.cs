@@ -1,9 +1,9 @@
-﻿using MinecraftSkins.Domain.Exceptions;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+﻿using MinecraftSkins.Domain.Common;
+using MinecraftSkins.Domain.Exceptions;
 
 namespace MinecraftSkins.Domain.Models
 {
-    public class Purchase
+    public class Purchase : ISoftDeletable
     {
         public Guid Id { get; private set; }
 

@@ -1,8 +1,9 @@
-﻿using MinecraftSkins.Domain.Exceptions;
+﻿using MinecraftSkins.Domain.Common;
+using MinecraftSkins.Domain.Exceptions;
 
 namespace MinecraftSkins.Domain.Models
 {
-    public class Skin
+    public class Skin : ISoftDeletable
     {
         public Guid Id { get; private set; }
 

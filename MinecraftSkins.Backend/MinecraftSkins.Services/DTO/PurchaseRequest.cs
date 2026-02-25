@@ -1,4 +1,7 @@
-﻿namespace MinecraftSkins.Services.DTO
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace MinecraftSkins.Services.DTO
 {
-    public record PurchaseRequest(Guid SkinId);
+    public record PurchaseRequest([Required(ErrorMessage = "Skin ID is required")]Guid SkinId
+);
 }

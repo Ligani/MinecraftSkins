@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using MinecraftSkins.Filters;
 using MinecraftSkins.Infrastructure.Data;
 using MinecraftSkins.Infrastructure.HttpClients;
 using MinecraftSkins.Infrastructure.Repositories;
@@ -16,6 +18,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddMemoryCache();
 
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.SuppressModelStateInvalidFilter = true;
+});
+
 builder.Services.AddHttpClient<IRateProvider, RateProvider>(client =>
 {
     client.BaseAddress = new Uri("https://api.coingecko.com/api/v3/");
@@ -31,7 +38,11 @@ builder.Services.AddCors(options =>
         });
 });
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<ValidationFilter>();
+    options.Filters.Add<ResponseWrapperFilter>();
+});
 
 builder.Services.AddEndpointsApiExplorer();
 
