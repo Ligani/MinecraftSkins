@@ -40,7 +40,7 @@ namespace MinecraftSkins.Services.Logics
 
             var finalPrice = _priceCalculator.CalculateBtcPrice(skin.BasePriceUsd, currentRate);
 
-            var success = await _skinRepository.TryMarkAsSoldAsync(skinId, cancellationToken);
+            var success = await _skinRepository.TryMarkAsSoldAsync(skin, cancellationToken);
 
             if (!success)
                 throw new UnavailableException("Sorry, this skin was just purchased.");

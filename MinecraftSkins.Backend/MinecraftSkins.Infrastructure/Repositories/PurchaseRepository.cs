@@ -41,11 +41,8 @@ namespace MinecraftSkins.Infrastructure.Repositories
 
             var totalCount = await query.CountAsync(cancellationToken);
 
-            var items = await query
-                .OrderBy(x => x.PurchasedAtUtc)
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync(cancellationToken);
+            var items = await query.OrderBy(x => x.PurchasedAtUtc).Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize).ToListAsync(cancellationToken);
 
             return new PagedResponse<Purchase>
             {

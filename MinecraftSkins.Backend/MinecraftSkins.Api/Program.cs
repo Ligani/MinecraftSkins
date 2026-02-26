@@ -29,6 +29,7 @@ builder.Services.AddHttpClient<IRateProvider, RateProvider>(client =>
     client.DefaultRequestHeaders.Add("Accept", "application/json");
     client.DefaultRequestHeaders.Add("User-Agent", "MinecraftSkinsApp/1.0");
 });
+
 const string ReactAppPolicy = "ReactAppPolicy";
 builder.Services.AddCors(options =>
 {

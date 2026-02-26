@@ -36,13 +36,19 @@ namespace MinecraftSkins.Infrastructure.Repositories
             };
         }
 
-        public async Task<bool> TryMarkAsSoldAsync(Guid skinId, CancellationToken ct)
+        public async Task<bool> TryMarkAsSoldAsync(Skin skin, CancellationToken cancellationToken)
         {
-            var affectedRows = await _dbSet
-                .Where(s => s.Id == skinId && s.IsAvailable && !s.IsDeleted)
-                .ExecuteUpdateAsync(setters => setters.SetProperty(s => s.IsAvailable, false), ct);
-
-            return affectedRows > 0;
+            try
+            {
+                skin.MarkAsSold();
+                _dbSet.Update(skin);
+                await _dbContext.SaveChangesAsync();
+                return true;
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return false;
+            }
         }
     }
 }
